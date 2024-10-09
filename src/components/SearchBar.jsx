@@ -1,13 +1,31 @@
-const SearchBar = ({query, setQuery, stockChecked, setStockChecked}) => {
-    return (
+const SearchBar = ({ query, setQuery, minDate, setMinDate, maxDate, setMaxDate }) => {
+  return (
+    <div>
+      <input 
+        type="text" 
+        name="search" 
+        id="search" 
+        placeholder="Filter by Last Name, First Name, Course, or Age"
+        value={query} 
+        onChange={(event) => setQuery(event.target.value)} 
+      />
+      
       <div>
-        <input type="text" name="search" id="search" value={query} onChange={(event) => setQuery(event.target.value) } />
-        <div>
-        <input type="checkbox" name="checkbox" id="checkbox" checked={stockChecked} onChange={(event) => setStockChecked(event.target.checked)}/>
-        Only show products in stock
-        </div>
+        <label>Filter Birthdate between: </label>
+        <input 
+          type="date" 
+          value={minDate} 
+          onChange={(event) => setMinDate(event.target.value)} 
+        />
+        <span> and </span>
+        <input 
+          type="date" 
+          value={maxDate} 
+          onChange={(event) => setMaxDate(event.target.value)} 
+        />
       </div>
-    )
-  }
-  
-  export default SearchBar;
+    </div>
+  );
+};
+
+export default SearchBar;
