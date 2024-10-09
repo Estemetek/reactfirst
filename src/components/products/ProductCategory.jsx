@@ -11,4 +11,4 @@ const ProductCategory = ({category}) => {
   )
 }
 
-export default ProductCategory
+export default ProductCategory;
