@@ -5,7 +5,7 @@ const SearchBar = ({ query, setQuery, minDate, setMinDate, maxDate, setMaxDate }
         type="text" 
         name="search" 
         id="search" 
-        placeholder="Filter by Last Name, First Name, Course, or Age"
+        placeholder="Filter"
         value={query} 
         onChange={(event) => setQuery(event.target.value)} 
       />
