@@ -1,39 +1,57 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import './App.css';
 import FilterProductTable from './components/FilterProductTable.jsx';
 import ProductTable from './components/ProductTable.jsx';
 import SearchBar from './components/SearchBar.jsx';
 
-// Sample Student Data
 const students = [
-  { id: 1, lastName: 'Doe', firstName: 'John', course: 'IT', birthdate: '1999/06/15' },
-  { id: 2, lastName: 'Smith', firstName: 'Anna', course: 'IS', birthdate: '2000/09/25' },
-  { id: 3, lastName: 'Brown', firstName: 'Michael', course: 'CS', birthdate: '1998/12/03' },
-  { id: 4, lastName: 'Davis', firstName: 'Emily', course: 'DS', birthdate: '2001/05/20' },
+  { id: 1, lastName: 'Fernandez', firstName: 'Patrik', course: 'IT', birthdate: '2000-05-15' },
+  { id: 2, lastName: 'Bustamante', firstName: 'Jana', course: 'IS', birthdate: '1998-09-23' },
+  { id: 3, lastName: 'Gomez', firstName: 'Alice', course: 'CS', birthdate: '2002-02-18' },
+  { id: 4, lastName: 'Gerald', firstName: 'Bernard', course: 'DS', birthdate: '1999-10-12' },
 ];
 
-// Header names for the table
-const headers = [
-  "Last Name", "First Name", "Course", "Birthdate", "Age"
-];
+// Helper function to accurately calculate age
+const calculateAge = (birthdate) => {
+  const birthDate = new Date(birthdate);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  if (
+    today.getMonth() < birthDate.getMonth() ||
+    (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+};
+
 
 function App() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [minDate, setMinDate] = useState('');
   const [maxDate, setMaxDate] = useState('');
 
-  // Filter the students based on search query and date range
   const filteredStudents = students.filter((student) => {
-    const fullName = `${student.firstName} ${student.lastName}`.toLowerCase();
-    const birthDate = new Date(student.birthdate);
-    const withinDateRange = (!minDate || birthDate >= new Date(minDate)) && (!maxDate || birthDate <= new Date(maxDate));
-
-    return (
-      fullName.includes(query.toLowerCase()) &&
-      withinDateRange
-    );
+    const age = calculateAge(student.birthdate);
+  
+    // Check if query matches Last Name, First Name, Course, or Age
+    const matchesQuery =
+      student.lastName.toLowerCase().includes(query.toLowerCase()) ||
+      student.firstName.toLowerCase().includes(query.toLowerCase()) ||
+      student.course.toLowerCase() === query.toLowerCase() ||
+      (!isNaN(query) && parseInt(query) === age); // Match age correctly
+  
+    // Check if the student falls within the birthdate range
+    const matchesDateRange =
+      (!minDate || new Date(student.birthdate) >= new Date(minDate)) &&
+      (!maxDate || new Date(student.birthdate) <= new Date(maxDate));
+  
+    return matchesQuery && matchesDateRange;
   });
+  
 
   return (
     <div>
@@ -41,12 +59,15 @@ function App() {
         <SearchBar 
           query={query} 
           setQuery={setQuery} 
-          minDate={minDate}
-          setMinDate={setMinDate}
-          maxDate={maxDate}
-          setMaxDate={setMaxDate}
+          minDate={minDate} 
+          setMinDate={setMinDate} 
+          maxDate={maxDate} 
+          setMaxDate={setMaxDate} 
         />
-        <ProductTable headers={headers} students={filteredStudents} />
+        <ProductTable 
+          headers={["Last Name", "First Name", "Course", "Birthdate", "Age"]} 
+          students={filteredStudents} 
+        />
       </FilterProductTable>
     </div>
   );

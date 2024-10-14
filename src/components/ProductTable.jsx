@@ -31,7 +31,7 @@ const ProductTable = ({ headers, students }) => {
               <Table.Column>{student.firstName}</Table.Column>
               <Table.Column>{student.course}</Table.Column>
               <Table.Column>{student.birthdate}</Table.Column>
-              <Table.Column>{calculateAge(student.birthdate)} yrs. old</Table.Column>
+              <Table.Column>{calculateAge(student.birthdate)}</Table.Column>
             </Table.Row>
           ))}
         </Table.Tbody>
